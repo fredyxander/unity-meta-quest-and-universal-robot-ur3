@@ -7,8 +7,8 @@ import math
 # -----------------------
 # Configuración del robot
 # -----------------------
-# ROBOT_IP = "192.168.0.10"   # IP de URSim
-ROBOT_IP = "192.168.0.196"   # IP Robot Real
+ROBOT_IP = "192.168.0.10"   # IP de URSim
+# ROBOT_IP = "192.168.0.196"   # IP Robot Real
 SOCKET_PORT = 30002         # Puerto 30002 → es la script interface, donde puedes mandar comandos en texto (speedj, stopj, etc.).
 UR_PORT_RTDE = 30004     # Puerto de RTDE
 
