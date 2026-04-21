@@ -1,0 +1,22 @@
+Ver logs en tiempo real con adb logcat (recomendado)
+🔧 Requisitos:
+Tener instalado el Android SDK Platform Tools (ya viene con Unity o puedes bajarlo desde Google).
+
+Activar la Depuración USB en las Meta Quest (Configuración → Sistema → Opciones de desarrollador → Depuración USB).
+1. Conecta tus Quest por cable USB-C al PC.
+
+2.Abre una terminal (cmd o PowerShell) en tu PC.
+adb devices
+
+→ Debe mostrar algo como 1 device connected.
+
+Si quieres solo tus Debug.Log, prueba:
+
+adb logcat | find "Unity"
+
+Lanza tu aplicación desde el visor; verás en consola tus mensajes tipo:
+
+📏 Depth raw: 0.45
+🟢 Profundidad detectada: 0.97 m
+
+👉 Puedes detenerlo con Ctrl + C.

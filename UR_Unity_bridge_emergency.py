@@ -7,7 +7,8 @@ import math
 # -----------------------
 # Configuración del robot
 # -----------------------
-ROBOT_IP = "192.168.0.10"   # IP de URSim
+# ROBOT_IP = "192.168.0.122"   # IP de URSim
+ROBOT_IP = "157.253.231.87"   # Cambia por la IP de tu UR real o de URSim
 # ROBOT_IP = "192.168.0.196"   # IP Robot Real
 SOCKET_PORT = 30002         # Puerto 30002 → es la script interface, donde puedes mandar comandos en texto (speedj, stopj, etc.).
 UR_PORT_RTDE = 30004     # Puerto de RTDE
@@ -269,22 +270,24 @@ async def motion_loop():
 # Cada vez que un cliente HTML se conecta, llama a handle_client.
 # Mientras tanto, arranca el bucle motion_loop que sigue mandando comandos a UR según el estado.
 async def main():
-  # ws://192.168.0.4:8765
-  host = "0.0.0.0"
-  port = 8765
+  # ip address wifi meta quest 2: 192.168.0.116 ajustar el host con otro last number
+  # ip address wifi pc: ipconfig en cmd> 
+  # Adaptador de LAN inalámbrica Wi-Fi:
+  #    Dirección IPv4. . . . . . . . . . . . . . : 192.168.0.115
+  #    Máscara de subred . . . . . . . . . . . . : 255.255.255.0
+  #    Puerta de enlace predeterminada . . . . . : 192.168.0.1
+    host = "0.0.0.0" #Escuchando en todas las interfaces: ws://0.0.0.0:8765 queda abierta a todas las interfaces
+    # en unity en websocket url usar la misma del pc> ws://192.168.0.115:8765
+    port = 8765
 
-  # Mostrar IP local
-  hostname = socket.gethostname()
-  local_ip = socket.gethostbyname(hostname)
+    print("=====================================")
+    print("✅ Servidor WebSocket corriendo para Meta Quest")
+    print(f"   Escuchando en todas las interfaces: ws://{host}:{port}")
+    print("   Conéctate desde Quest usando la IP real de este PC en la red WiFi")
+    print("=====================================")
 
-  print("=====================================")
-  print("✅ Servidor WebSocket corriendo para meta Quest")
-  print(f"   Dirección local: ws://{local_ip}:{port}")
-  print(f"   Dirección universal: ws://{host}:{port}")
-  print("=====================================")
-
-  async with websockets.serve(handle_client, host, port):
-    await motion_loop()  # mantiene el bucle vivo
+    async with websockets.serve(handle_client, host, port):
+        await motion_loop()  # mantiene el bucle vivo
 
 # Arranca el programa asíncrono.
 # Lanza tanto el servidor WebSocket como el bucle de control del robot.

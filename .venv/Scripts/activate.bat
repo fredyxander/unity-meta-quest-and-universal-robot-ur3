@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\fredy\OneDrive\Desktop\fredy\UniAndes\Maestria\Semestre 2\Realidad Mixta\Demo1\Repos\Test_Connect_Move_URSIM - Copy\.venv
+set VIRTUAL_ENV=D:\Fredy\Repos\unity-meta-quest-and-universal-robot-ur3\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 

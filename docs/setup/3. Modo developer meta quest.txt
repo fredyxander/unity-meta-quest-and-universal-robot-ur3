@@ -1,0 +1,57 @@
+Para habilitar el modo depuracion, asegurar:
+Nota importante: Solo se puede hacer build en la cuenta admin.
+
+1. Descargar e instalar meta quest link
+2. Descargar e instalar meta quest hub developer.
+3. Prender las gafas y conectar al wifi de la misma red
+4. air link deshabilitado
+5. Bluetooth deshabilitado
+
+6. Importante:
+En el visor:
+6.1 Conecta el cable.
+6.2. Debe aparecer "Permitir acceso a los archivos desde este ordenador?"
+6.3. Selecciona Permitir.
+6.4. DESPUÉS debe aparecer la ventana “Permitir depuración USB?”.
+Si no aparece:
+- Desconecta el cable
+- Reinicia visor
+- Vuelve a conectar mientras está desbloqueado
+
+En el caso que no funcione, verificar conexión adb
+6B.1. En la terminal cmd, ejecutar:
+C:\Users\fredd>adb devices
+"adb" no se reconoce como un comando interno o externo, programa o archivo por lotes ejecutable.
+6B.2. Se debe descragra Android SDK Platform Tools, descomprimirlo y pegar la carpeta platform-tools en algun lugar,
+por ejemplo C:\platform-tools
+6B.3. Luego agregar en environment variables, copiar la ruta donde esta adb.exe (C:\platform-tools)
+      y agregarla como nueva var en path tanto en variables de usuario como en variables del sistema->Aceptar y Guardar
+6B.4. Volver a ejecutar en la terminal cmd: C:\Users\fredd>adb devices
+Resultado esperado:
+List of devices attached
+--Aparecera vacio
+
+6B.5. Conectar las gafas por cable usb y ejecutar en cmd de nuevo:
+C:\Users\fredd>adb devices
+List of devices attached
+2G0YC5ZG3203V1  unauthorized
+
+6B.6. En el caso que aparece "unauthorized" es que no se ha dado el permiso en el visor,
+pero que si se tiene conexión.
+ Lo siguiente sera
+ adb kill-server
+
+ Luego
+ adb start-server
+
+ Y reiniciamos el visor.
+
+ Cuando se inicie de nuevo ya deberiamos ver el mensaje de aceptar depuracion.
+
+6B.7. Una vez se acepte la depuración, veremos en el cmd
+C:\Users\fredd>adb devices
+List of devices attached
+2G0YC5ZG3203V1  device
+
+Nota importante: Si se cambia de cuenta se puede perder la conexión
+adb, por lo que será necesario hacer el proceso de nuevo.

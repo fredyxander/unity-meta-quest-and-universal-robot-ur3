@@ -1,0 +1,47 @@
+1. Verificar que la luz de ethernet este parpadeando.
+Importante en ambos modos: Tener desactivadas VPNs como warp.
+2. Configuracion primero por manual.
+ - Conectarse con la computadora a la misma red y verificar las ips.
+ - Abrir cmd terminal: ipconfig
+   Salida:
+   daptador de LAN inalámbrica Wi-Fi:
+    Sufijo DNS específico para la conexión. . :
+    Vínculo: dirección IPv6 local. . . : fe80::cd6c:d45c:f5c9:2fcf%4
+    Dirección IPv4. . . . . . . . . . . . . . : 192.168.0.115 (ip computadora wifi)
+    Máscara de subred . . . . . . . . . . . . : 255.255.255.0 (subnet mask)
+    Puerta de enlace predeterminada . . . . . : 192.168.0.1   (default gateway)
+
+ - Con estos valores agregar la red especifica en el polyscope
+   Ir a Setup Robot->Network->Static Adress
+   - IP Adress:   192.168.0.16
+   - Subnet mask: 255.255.255.0
+   - Default gateway: 192.168.0.1
+
+   Aplicar cambios y reiniciar.
+ - Una vez reinicie entrar a About, y revisar que aparezca la ip configurada *(connected), sin la frase "Network not connected".
+
+3. Si no funciona cambio directo a DHCP
+ - En polyscope: Settings → System → Network -> Activar [x]DHCP
+ - Esperar de 20s a 30s y luego abrir About, Debería aparecer la ip conectada.
+ - Probar desde la compu->cmd:ping <ip> por ejemplo: ping 157.253.231.76
+   Salida:
+  Haciendo ping a 157.253.231.76 con 32 bytes de datos:
+  Respuesta desde 157.253.231.76: bytes=32 tiempo=1ms TTL=62
+  Respuesta desde 157.253.231.76: bytes=32 tiempo=1ms TTL=62
+  Respuesta desde 157.253.231.76: bytes=32 tiempo=1ms TTL=62
+  Respuesta desde 157.253.231.76: bytes=32 tiempo=1ms TTL=62
+
+  Estadísticas de ping para 157.253.231.76:
+    Paquetes: enviados = 4, recibidos = 4, perdidos = 0
+    (0% perdidos),
+  Tiempos aproximados de ida y vuelta en milisegundos:
+    Mínimo = 1ms, Máximo = 1ms, Media = 1ms
+  
+4. Si DHCP no funciona, ir con modo manual
+ - Settings → System → Network -> Static Address:
+   IP Address:   192.168.0.50
+   Subnet Mask:  255.255.255.0
+   Gateway:      192.168.0.1
+ **Nota: Usa una IP alta (.50, .60) para evitar conflictos con DHCP del router.
+ **Nota: Conflicto de ip: Si falla probar con otra, puede haber conflictos con otras ips.
+

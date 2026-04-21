@@ -1,0 +1,76 @@
+Para proyecto: unity-meta-quest-and-universal-robot-ur3
+Instalación y Configuración Unity:
+1. Instalar Unity Hub
+2. Instalar unity editor 2022.3.62f3
+   - Agregar Android Build Support
+   - Agregar Windows Build support
+
+3. Clonar el proyecto del repo:https://github.com/fredyxander/unity-meta-quest-and-universal-robot-ur3
+   - En unity editor: ADD project form disk, y seleccionar toda la carpeta del proyecto, abrirlo con el editor instalado
+     2022.3.62f3
+   - 
+
+4. Seguir el readme del Repo para la instalación de URSim y python
+
+5. Una vez se tenga la conexión python-ursim, podemos hacer ahora la prueba con el robot real, cambiando la ip.
+ 5.1. Configurar primero robot real para conectarse a la misma red, y hacer ping al robot desde la pc
+      Seguir el documento: "Config ip robot ur3 real"
+
+6. Una vez probamos esta conexión ahora probamos nuestra conexión con python-urReal
+ 6.1. Usar fredrive para mover al robot a una posición diferente a home.
+ 6.2. Cambiar la ip en el programa: python-test-conecction-ur.py
+ 6.3. Ejecutar el programa, y debería volver a la posición inicial.
+
+7. Ahora vamos a conectar las gafas Meta Quest 2:
+  Para esto seguir el documento: Modo developer meta quest
+
+8. Una vez se logra la conexión de las gafas en modo developer a nuestro pc, lo siguiente es compilar y descargar el 
+   proyecto en las meta quest y conectar con python.
+   8.1. Corregir problemas packages.
+   - Edit->Project settings->Meta XR
+   - Edit->Project settings->XR Plug-in management->Project Validation
+   8.2. Switch platform
+   - File->build settings->Select Android> Switch Platform
+   8.3. Compilar poryecto:
+   - File->Build settings->Add scene
+   - Select device, click on "Build and Run" y guardar el build en la carpate Builds/nombre.apk
+
+   8.4. Si compilo correctamente podemos colocarnos las gafas y verificar la ejecución de la App.
+
+   8.5. Si se ejecuta, ahora vamos a conectar con python y ur3Real
+   - Primero cambiamos la ip del robot real en el archivo de python UR_Unity_bridge_emergency.py
+     en la variable ROBOT_IP, y el host lo dejamos 0.0.0.0 para que este abierto en todas las interfaces disponibles.
+     Finalmente ejecutamos el programa antes verificando que no este corriendo ninguna vpn.
+     Cuando se ejecuta el script nos va aparecer en la consola "Servidor WebSocket corriendo para meta Quest"
+     y nos va aparecer la dirección local disponible para conectar nuestra aplicación de unity meta quest
+     [UR] Conectado a Robot(Socket) - Envio: 157.253.231.87:30002
+     [RTDE] Conectado a Robot(RTDE) 157.253.231.87:30004
+     =====================================
+     ✅ Servidor WebSocket corriendo para Meta Quest
+     Escuchando en todas las interfaces: ws://0.0.0.0:8765
+     Conéctate desde Quest usando la IP real de este PC en la red WiFi
+
+   - Verificamos la ip de las quest y la ip de nuestro pc deben estar en la misma red.
+     ip address meta quest en la red wifi: detalles: (ejemplo: 192.168.0.116)
+     ip en nuestra pc con la red wifi: en cmd comando: ipconfig
+       # Adaptador de LAN inalámbrica Wi-Fi:
+       #    Dirección IPv4. . . . . . . . . . . . . . : 192.168.0.115
+       #    Máscara de subred . . . . . . . . . . . . : 255.255.255.0
+       #    Puerta de enlace predeterminada . . . . . : 192.168.0.1
+
+    Como vemos quest y pc comparten la misma red.
+     ip meta quest: 192.168.0.116 
+     ip pc wifi:    192.168.0.115
+
+    Entonces, desde Unity, el cliente WebSocket debe apuntar a la del pc con el puerto>  ws://192.168.0.115:8765
+
+   - Nos aseguramos en unity project que no haya ningún error de instalación en la pestaña
+     edit>project settings> XR Plug-in management>project validation tanto para windows como para android.
+
+   - Abrimos en la escena el objeto "WebSocketManager" y cambiamos la variable Url por la dirección indicada.
+     Ejemplo (Url: ws://192.168.0.115:8765)
+
+   - Configurar las gafas en la sección build settings, para quest2, 3 o pro. Asegurando que la escena este
+     agregada y que la plataforma sea Android y hacer el "build and run" con la ip configurada.
+
+   - Colocarnos la gafas, abrir la App, conectar el robot y comenzar a probar. 

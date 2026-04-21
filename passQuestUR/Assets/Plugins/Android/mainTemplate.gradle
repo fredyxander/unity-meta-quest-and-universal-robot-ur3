@@ -18,6 +18,7 @@ dependencies {
 **DEPS**}
 
 android {
+	namespace "com.unity3d.player"
     ndkPath "**NDKPATH**"
 
     compileSdkVersion **APIVERSION**

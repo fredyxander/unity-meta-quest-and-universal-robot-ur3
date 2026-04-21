@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Repos\\unity-meta-quest-and-universal-robot-ur3\\passQuestUR\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9ABEA2A7-1AB8-651B-2754-25C2434FCF83}|Assembly-CSharp.csproj|e:\\repos\\unity-meta-quest-and-universal-robot-ur3\\passquestur\\assets\\scripts\\robotcommands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ABEA2A7-1AB8-651B-2754-25C2434FCF83}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\robotcommands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9ABEA2A7-1AB8-651B-2754-25C2434FCF83}|Assembly-CSharp.csproj|e:\\repos\\unity-meta-quest-and-universal-robot-ur3\\passquestur\\assets\\scripts\\websocketworker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ABEA2A7-1AB8-651B-2754-25C2434FCF83}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\websocketworker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "robotCommands.cs",
+              "DocumentMoniker": "E:\\Repos\\unity-meta-quest-and-universal-robot-ur3\\passQuestUR\\Assets\\Scripts\\robotCommands.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\robotCommands.cs",
+              "ToolTip": "E:\\Repos\\unity-meta-quest-and-universal-robot-ur3\\passQuestUR\\Assets\\Scripts\\robotCommands.cs",
+              "RelativeToolTip": "Assets\\Scripts\\robotCommands.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T16:46:27.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "websocketWorker.cs",
+              "DocumentMoniker": "E:\\Repos\\unity-meta-quest-and-universal-robot-ur3\\passQuestUR\\Assets\\Scripts\\websocketWorker.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\websocketWorker.cs",
+              "ToolTip": "E:\\Repos\\unity-meta-quest-and-universal-robot-ur3\\passQuestUR\\Assets\\Scripts\\websocketWorker.cs",
+              "RelativeToolTip": "Assets\\Scripts\\websocketWorker.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAwwAkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T16:36:56.246Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

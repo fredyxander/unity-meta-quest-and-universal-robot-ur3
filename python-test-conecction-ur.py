@@ -4,7 +4,8 @@ import rtde_receive
 # -----------------------
 # Configuración del robot
 # -----------------------
-UR_IP = "192.168.0.10"   # Cambia por la IP de tu UR real o de URSim
+# UR_IP = "192.168.38.17"   # Cambia por la IP de tu UR real o de URSim
+UR_IP = "157.253.231.87"   # Cambia por la IP de tu UR real o de URSim
 UR_PORT_SOCKET = 30002   # Puerto para enviar programas/scripts al robot
 UR_PORT_RTDE = 30004     # Puerto de RTDE
 
