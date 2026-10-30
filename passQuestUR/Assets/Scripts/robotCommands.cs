@@ -26,6 +26,7 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             robotJoinStatusText.color = color;
         }
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (wsWorker != null)
@@ -37,12 +38,20 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (wsWorker != null)
+        if (wsWorker == null)
+            return;
+
+        if (commandOnPress == "home" ||
+            commandOnPress == "gripper_abrir" ||
+            commandOnPress == "gripper_cerrar")
         {
-            wsWorker.SendCommand("stop");
-            Debug.Log("Enviado (UP): stop");
+            return;
         }
+
+        wsWorker.SendCommand("stop");
+        Debug.Log("Enviado (UP): stop");
     }
+
 
     public void girarBaseHover()
     {
