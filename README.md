@@ -215,15 +215,19 @@ Este software corre en **Linux**, por lo que para usarlo en entornos **Windows**
    3. Verificar la dirección IP de URSim. Ir a la sección about, y tomar la ip que nos aparece y que se debe usar en el script Python.
    <img src="docs/about-ip-ur.png" width="200">
 
+   Si la ip aparece como 0.0.0.0, dentro de Oracle VirtualBox es un comportamiento conocido del simulador, y no significa necesariamente que exista un problema de conectividad.
+
+   Sin embargo, si desde tu computador puedes hacer ping a la máquina virtual, significa que el sistema operativo de la VM tiene una interfaz de red operativa.
+
    4. Confirmar conexión externa (host Windows)
-     - 4.1. Ya desde Windows (donde tienes el script), asegúrate de que puedas hacer ping a la VM:	`ping 192.###.##.###`
+     - 4.1. Ya desde Windows (desde la ubicacion del proyecto donde tienes el script), asegúrate de que puedas hacer ping a la VM:	`ping 192.###.##.###`
 
    5. Verificar la configuración de la red de VirtualBox (usar Bridged Adapter).
 
-   6. Mover el robot en el simulador en la pestaña "move" hacia una posición indeterminada.
+   6. Encender el robot en el simulador y Mover el robot en el simulador en la pestaña "move" hacia una posición indeterminada.
    <img src="docs/Conection-test-position.png" width="300">
 
-   7. Finalmente cambiar en el script la ip del simualdor y luego proceder a correr el script. Si todo funciona correctamente, al correr el programa se vera mover el robot.
+   7. Finalmente cambiar en el script "python-test-conecction-ur.py" la ip del simulador y luego proceder a correr el script. Si todo funciona correctamente, al correr el programa se vera mover el robot.
 
 ### 2. Conexión UR-Python-meta quest2
 
