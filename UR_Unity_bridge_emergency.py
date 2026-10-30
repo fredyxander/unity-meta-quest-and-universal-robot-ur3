@@ -49,6 +49,67 @@ HOME_POINT_CMD = (
     f"movej({HOME_JOINTS}, a=0.3, v=0.15)\n"
 ) # Posición home del robot
 
+#Movimiento lineal
+CARTESIAN_SPEED = 0.02  # 2 cm/s, inicialmente en URSim
+CARTESIAN_ACCEL = 0.1   # m/s²
+CARTESIAN_TIME = 0.1    # segundos por instrucción
+
+
+
+CARTESIAN_VELOCITY = {
+    # Eje Z - Vertical
+    "arriba":    [0, 0, CARTESIAN_SPEED, 0, 0, 0],
+    "abajo":     [0, 0, -CARTESIAN_SPEED, 0, 0, 0],
+
+    # Eje X - Adelante / Atrás
+    "adelante":  [CARTESIAN_SPEED, 0, 0, 0, 0, 0],
+    "atras":     [-CARTESIAN_SPEED, 0, 0, 0, 0, 0],
+
+    # Eje Y - Izquierda / Derecha
+    "izquierda": [0, CARTESIAN_SPEED, 0, 0, 0, 0],
+    "derecha":   [0, -CARTESIAN_SPEED, 0, 0, 0, 0],
+}
+
+
+
+# Límites cartesianos del TCP
+# -----------------------------------
+# Límites verticales del TCP - URSim
+# -----------------------------------
+Z_HOME = 0.3127495509466381
+# Recorrido permitido: +/- 5 cm
+Z_MIN = Z_HOME - 0.13
+Z_MAX = Z_HOME + 0.10
+# Margen experimental de frenado
+Z_MARGIN = 0.01
+
+
+# -----------------------------------
+# Límites del TCP en eje X - URSim
+# -----------------------------------
+X_HOME = -0.0646679620808724
+X_MIN = X_HOME - 0.8
+X_MAX = X_HOME + 0.8
+X_MARGIN = 0.01
+
+
+# -----------------------------------
+# Límites cartesianos del eje Y
+# -----------------------------------
+Y_HOME = -0.31207534402369824
+Y_MIN = Y_HOME - 0.10
+Y_MAX = Y_HOME + 0.10
+Y_MARGIN = 0.01
+
+
+# Desaceleración cartesiana para URSim
+STOPL_ACCEL = 0.1
+
+print(f"[TCP] HOME: {Z_HOME:.4f} m")
+print(f"[TCP] Z mínima: {Z_MIN:.4f} m")
+print(f"[TCP] Z máxima: {Z_MAX:.4f} m")
+
+
 # Conexión con rtde para leer datos del robot
 """Conexión vía RTDE para recibir estado"""
 try:
@@ -98,23 +159,36 @@ async def handle_client(websocket, path=None):  # <-- path es opcional
         current_cmd = "muneca3_izquierda"
       elif message == "muneca3_derecha":
         current_cmd = "muneca3_derecha"
+      elif message in CARTESIAN_VELOCITY:
+        current_cmd = message
+        print(f"[UR] Movimiento cartesiano: {message}")
+
+      #movimiento lineal
       elif message == "stop":
+          previous_cmd = current_cmd
           current_cmd = None
+
           try:
-              r_socket.sendall(b"stopj(1.0)\n")
-              print("[UR] STOP enviado")
+              if previous_cmd in CARTESIAN_VELOCITY:
+                  r_socket.sendall(b"stopl(0.1)\n")
+                  print("[UR] STOP CARTESIANO enviado")
+              else:
+                  r_socket.sendall(b"stopj(1.0)\n")
+                  print("[UR] STOP ARTICULAR enviado")
+
           except Exception as e:
               print("[UR] Error enviando STOP:", e)
               raise
 
-      elif message == "stop":
-        current_cmd = None
-        try:
-          r_socket.sendall(b"stopj(1.0)\n")
-          print("[UR] STOP enviado")
-        except Exception as e:
-          print("[UR] Error enviando STOP:", e)
-          raise
+      #Movimiento articular
+      # elif message == "stop":
+      #     current_cmd = None
+      #     try:
+      #         r_socket.sendall(b"stopj(1.0)\n")
+      #         print("[UR] STOP enviado")
+      #     except Exception as e:
+      #         print("[UR] Error enviando STOP:", e)
+      #         raise
 
       elif message == "home":
           current_cmd = None
@@ -288,11 +362,95 @@ async def motion_loop():
               cmd = "speedj([0,0,0,0,0,0.5], 1.0, 0.1)\n"  # mueve solo J5 en + sentido
               r_socket.send(cmd.encode("utf-8"))
 
-      # elif current_cmd == "home":
-      #     current_cmd = None
 
-          print("[UR] Ejecutando HOME")
-          r_socket.sendall(HOME_POINT_CMD.encode("utf-8"))
+      elif current_cmd in CARTESIAN_VELOCITY:
+
+          # Leer estado del TCP
+          tcp_pose = rtde_r.getActualTCPPose()
+          tcp_speed = rtde_r.getActualTCPSpeed()
+
+          velocity = CARTESIAN_VELOCITY[current_cmd]
+
+          # Determinar eje de movimiento
+
+          if current_cmd in ("arriba", "abajo"):
+              axis = 2
+              axis_name = "Z"
+              lower_limit = Z_MIN
+              upper_limit = Z_MAX
+              margin = Z_MARGIN
+
+          elif current_cmd in ("adelante", "atras"):
+              axis = 0
+              axis_name = "X"
+              lower_limit = X_MIN
+              upper_limit = X_MAX
+              margin = X_MARGIN
+
+          elif current_cmd in ("izquierda", "derecha"):
+              axis = 1
+              axis_name = "Y"
+              lower_limit = Y_MIN
+              upper_limit = Y_MAX
+              margin = Y_MARGIN
+
+          position = tcp_pose[axis]
+          actual_speed = tcp_speed[axis]
+          command_speed = velocity[axis]
+
+          # Estimar frenado solo en el sentido
+          # en el que se está solicitando avanzar
+          speed_toward_limit = max(
+              0.0,
+              actual_speed * (
+                  1 if command_speed > 0 else -1
+              )
+          )
+
+          braking_distance = (
+              speed_toward_limit ** 2
+          ) / (2 * STOPL_ACCEL)
+
+          reserve = margin + braking_distance
+
+          # Comprobar el límite en la dirección
+          # de movimiento solicitada
+          limit_reached = (
+              (
+                  command_speed > 0
+                  and position >= upper_limit - reserve
+              )
+              or
+              (
+                  command_speed < 0
+                  and position <= lower_limit + reserve
+              )
+          )
+
+          if limit_reached:
+              current_cmd = None
+
+              print(
+                  f"[LIMIT] Eje {axis_name}: "
+                  f"{position:.4f} m"
+              )
+
+              r_socket.sendall(
+                  f"stopl({STOPL_ACCEL})\n".encode("utf-8")
+              )
+
+              await notify_clients("limit_reached")
+
+          else:
+              cmd = (
+                  f"speedl({velocity}, "
+                  f"{CARTESIAN_ACCEL}, "
+                  f"{CARTESIAN_TIME})\n"
+              )
+
+              r_socket.sendall(cmd.encode("utf-8"))
+
+
       # si current_cmd is None, no enviamos speedj
     except Exception as e:
       print("[UR] Error enviando comando:", e)
