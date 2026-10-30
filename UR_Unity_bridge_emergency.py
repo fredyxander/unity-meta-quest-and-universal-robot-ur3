@@ -7,9 +7,8 @@ import math
 # -----------------------
 # Configuración del robot
 # -----------------------
-# ROBOT_IP = "192.168.0.122"   # IP de URSim
-ROBOT_IP = "157.253.231.87"   # Cambia por la IP de tu UR real o de URSim
-# ROBOT_IP = "192.168.0.196"   # IP Robot Real
+# ROBOT_IP = "192.168.0.158"   # IP de URSim
+ROBOT_IP = "157.253.197.179"   # IP Robot Real
 SOCKET_PORT = 30002         # Puerto 30002 → es la script interface, donde puedes mandar comandos en texto (speedj, stopj, etc.).
 UR_PORT_RTDE = 30004     # Puerto de RTDE
 
@@ -37,7 +36,18 @@ JOINT_LIMITS = {
 }
 SAFE_MARGIN = math.radians(10)  # asegura que se detenga antes de llegar al límite físico. 10 grados → 0.174 rad
 
-HOME_POINT_CMD = "movej([0, -1.57, 0, -1.57, 0, 0], a=1.0, v=0.5)\n" # Posición home del robot
+HOME_JOINTS = [
+    1.00805,    # J1: 57.76°
+    -1.570796,  # J2: -90°
+    1.570796,   # J3: 90°
+    -1.570796,  # J4: -90°
+    -1.570796,  # J5: -90°
+    0.0         # J6: 0°
+]
+
+HOME_POINT_CMD = (
+    f"movej({HOME_JOINTS}, a=0.3, v=0.15)\n"
+) # Posición home del robot
 
 # Conexión con rtde para leer datos del robot
 """Conexión vía RTDE para recibir estado"""
@@ -89,16 +99,36 @@ async def handle_client(websocket, path=None):  # <-- path es opcional
       elif message == "muneca3_derecha":
         current_cmd = "muneca3_derecha"
       elif message == "stop":
+          current_cmd = None
+          try:
+              r_socket.sendall(b"stopj(1.0)\n")
+              print("[UR] STOP enviado")
+          except Exception as e:
+              print("[UR] Error enviando STOP:", e)
+              raise
+
+      elif message == "stop":
         current_cmd = None
-      elif message == "home":
-        current_cmd = "home"
-        # Si se recibe "stop", además de limpiar current_cmd, manda el comando stopj(1.0) al UR para que frene.
         try:
-          r_socket.send(b"stopj(1.0)\n")
+          r_socket.sendall(b"stopj(1.0)\n")
+          print("[UR] STOP enviado")
         except Exception as e:
-          print("[UR] Error enviando stop:", e)
+          print("[UR] Error enviando STOP:", e)
+          raise
+
+      elif message == "home":
+          current_cmd = None
+          print("[UR] HOME solicitado")
+
+          try:
+              r_socket.sendall(HOME_POINT_CMD.encode("utf-8"))
+              print("[UR] Movimiento HOME enviado")
+          except Exception as e:
+              print("[UR] Error enviando HOME:", e)
+
       else:
         print("[WS] Comando no reconocido:", message)
+
   except websockets.exceptions.ConnectionClosedOK:
     print("[WS] Cliente desconectado (OK)")
   except Exception as e:
@@ -145,7 +175,7 @@ async def motion_loop():
           current_cmd = None
           await notify_clients("limit_reached")  # 🔔 Notificar
         else:
-          cmd = "speedj([0.5,0,0,0,0,0], 1.0, 0.1)\n"
+          cmd = "speedj([0.5,0,0,0,0,0], 0.5, 0.1)\n"
           r_socket.send(cmd.encode("utf-8"))
 
       elif current_cmd == "hombro_izquierda":
@@ -258,9 +288,11 @@ async def motion_loop():
               cmd = "speedj([0,0,0,0,0,0.5], 1.0, 0.1)\n"  # mueve solo J5 en + sentido
               r_socket.send(cmd.encode("utf-8"))
 
-      elif current_cmd == "home":
-        r_socket.send(HOME_POINT_CMD.encode("utf-8"))
+      # elif current_cmd == "home":
+      #     current_cmd = None
 
+          print("[UR] Ejecutando HOME")
+          r_socket.sendall(HOME_POINT_CMD.encode("utf-8"))
       # si current_cmd is None, no enviamos speedj
     except Exception as e:
       print("[UR] Error enviando comando:", e)

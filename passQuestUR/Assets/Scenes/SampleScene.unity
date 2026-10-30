@@ -12975,7 +12975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ee9776f5ef0c14cb2da55bb83902b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: ws://192.168.0.115:8765
+  url: ws://192.168.0.145:8765
   conectionStatus: {fileID: 1826760490}
   displayControlPanel: {fileID: 905693841}
   uiRobotManager: {fileID: 1962153374}
@@ -31092,7 +31092,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1976859578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31759,8 +31759,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555725d48e9051a4bb6b8d45178c2fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectionSurfaceType: 1
-  overlayType: 2
+  projectionSurfaceType: 0
+  overlayType: 1
   compositionDepth: 0
   hidden: 0
   overridePerLayerColorScaleAndOffset: 0

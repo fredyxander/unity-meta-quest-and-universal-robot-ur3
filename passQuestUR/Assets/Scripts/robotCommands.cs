@@ -26,6 +26,7 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             robotJoinStatusText.color = color;
         }
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (wsWorker != null)
@@ -39,10 +40,19 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         if (wsWorker != null)
         {
+            // HOME no debe detenerse al soltar el botón.
+            if (commandOnPress == "home")
+            {
+                Debug.Log("HOME liberado: movimiento continúa");
+                return;
+            }
+
+            // Los movimientos manuales sí se detienen.
             wsWorker.SendCommand("stop");
             Debug.Log("Enviado (UP): stop");
         }
     }
+
 
     public void girarBaseHover()
     {

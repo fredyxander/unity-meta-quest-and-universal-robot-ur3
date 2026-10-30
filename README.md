@@ -236,10 +236,10 @@ Este software corre en **Linux**, por lo que para usarlo en entornos **Windows**
 #### 2.2. Cuando se ejecuta el script nos va aparecer en la consola "Servidor WebSocket corriendo para meta Quest" y nos va aparecer la dirección local disponible para conectar nuestra aplicación de meta quest
    <img src="docs/conected-py-ur.png" width="250">
 
-#### 2.3. Abrir el proyecto en unity con la versión unity editor 2022.3.10 (LTS), copiamos la dirección del servidor `dirección local`, en la jerequía de nuestro proyecto seleccionamos el componente `WebSocketManager` y en el inspector pegamos nuestra dirección del servidor de python en la variable `Url`
+#### 2.3. Abrir el proyecto en unity con la versión unity editor 2022.3.10 (LTS), copiamos la dirección ip del pc servidor de python windows(ipconfig) Busca la sección del adaptador Wi-Fi o Ethernet conectado y localiza y busca ipv4, en la jerequía de nuestro proyecto seleccionamos el componente `WebSocketManager` y en el inspector pegamos nuestra dirección del servidor de python en la variable `Url`
    <img src="docs/cambio-ws-ip.png" width="300">
 
-#### 2.4. Nos aseguramos que no haya ning[un error de instalaci[on en la pesta;a edit>project settings> XR Plug-in management>project validation tanto para windows como para android.
+#### 2.4. Nos aseguramos que no haya ningún error de instalación en la pesta;a edit>project settings> XR Plug-in management>project validation tanto para windows como para android.
    
 #### 2.5. Configurar las gafas en la sección **build settings**, para quest2, 3 o pro. Asegurando que la escena este agregada y que la plataforma sea Android
    <img src="docs/config-build-settings.png" width="250">
