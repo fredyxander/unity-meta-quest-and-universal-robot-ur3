@@ -38,19 +38,18 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (wsWorker != null)
-        {
-            // HOME no debe detenerse al soltar el botón.
-            if (commandOnPress == "home")
-            {
-                Debug.Log("HOME liberado: movimiento continúa");
-                return;
-            }
+        if (wsWorker == null)
+            return;
 
-            // Los movimientos manuales sí se detienen.
-            wsWorker.SendCommand("stop");
-            Debug.Log("Enviado (UP): stop");
+        if (commandOnPress == "home" ||
+            commandOnPress == "gripper_abrir" ||
+            commandOnPress == "gripper_cerrar")
+        {
+            return;
         }
+
+        wsWorker.SendCommand("stop");
+        Debug.Log("Enviado (UP): stop");
     }
 
 

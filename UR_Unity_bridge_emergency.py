@@ -78,7 +78,7 @@ CARTESIAN_VELOCITY = {
 # -----------------------------------
 Z_HOME = 0.3127495509466381
 # Recorrido permitido: +/- 5 cm
-Z_MIN = Z_HOME - 0.13
+Z_MIN = Z_HOME - 0.15
 Z_MAX = Z_HOME + 0.10
 # Margen experimental de frenado
 Z_MARGIN = 0.01
@@ -199,6 +199,18 @@ async def handle_client(websocket, path=None):  # <-- path es opcional
               print("[UR] Movimiento HOME enviado")
           except Exception as e:
               print("[UR] Error enviando HOME:", e)
+
+      elif message == "gripper_abrir":
+          r_socket.sendall(
+              b"set_tool_digital_out(0, True)\n"
+          )
+          print("[GRIPPER] Apertura solicitada")
+
+      elif message == "gripper_cerrar":
+          r_socket.sendall(
+              b"set_tool_digital_out(0, False)\n"
+          )
+          print("[GRIPPER] Cierre solicitado")
 
       else:
         print("[WS] Comando no reconocido:", message)
