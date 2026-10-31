@@ -18,14 +18,19 @@ public class robotCommands : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public Renderer objectWrist2;
     public Renderer objectWrist3;
 
+
     public void UpdateJointStatus(string message, Color color)
     {
         if (robotJoinStatusText != null)
         {
             robotJoinStatusText.text = message;
-            robotJoinStatusText.color = color;
+
+            // Verde oscuro personalizado
+            Color darkGreen = new Color32(255, 48, 48, 255);
+            robotJoinStatusText.color = darkGreen;
         }
     }
+
 
     public void OnPointerDown(PointerEventData eventData)
     {

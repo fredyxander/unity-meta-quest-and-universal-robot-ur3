@@ -1,7 +1,7 @@
 
 import socket
 
-ROBOT_IP = "157.253.197.179"
+ROBOT_IP = "157.253.197.241"
 ROBOT_PORT = 30002
 
 def enviar(comando):

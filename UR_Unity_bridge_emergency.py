@@ -8,7 +8,7 @@ import math
 # Configuración del robot
 # -----------------------
 # ROBOT_IP = "192.168.0.158"   # IP de URSim
-ROBOT_IP = "157.253.197.179"   # IP Robot Real
+ROBOT_IP = "157.253.197.169"   # IP Robot Real
 SOCKET_PORT = 30002         # Puerto 30002 → es la script interface, donde puedes mandar comandos en texto (speedj, stopj, etc.).
 UR_PORT_RTDE = 30004     # Puerto de RTDE
 
@@ -78,7 +78,7 @@ CARTESIAN_VELOCITY = {
 # -----------------------------------
 Z_HOME = 0.3127495509466381
 # Recorrido permitido: +/- 5 cm
-Z_MIN = Z_HOME - 0.15
+Z_MIN = Z_HOME - 0.18
 Z_MAX = Z_HOME + 0.10
 # Margen experimental de frenado
 Z_MARGIN = 0.01
@@ -88,8 +88,8 @@ Z_MARGIN = 0.01
 # Límites del TCP en eje X - URSim
 # -----------------------------------
 X_HOME = -0.0646679620808724
-X_MIN = X_HOME - 0.8
-X_MAX = X_HOME + 0.8
+X_MIN = X_HOME - 0.10
+X_MAX = X_HOME + 0.10
 X_MARGIN = 0.01
 
 
@@ -97,7 +97,7 @@ X_MARGIN = 0.01
 # Límites cartesianos del eje Y
 # -----------------------------------
 Y_HOME = -0.31207534402369824
-Y_MIN = Y_HOME - 0.10
+Y_MIN = Y_HOME - 0.06
 Y_MAX = Y_HOME + 0.10
 Y_MARGIN = 0.01
 
